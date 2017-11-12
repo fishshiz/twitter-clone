@@ -4,6 +4,34 @@ class FollowToggle {
     this.userId = this.$el.data('user_id') || options.userId;
     this.followState = this.$el.data('initial_follow_state') || options.followState;
     render();
+    handleClick();
+  }
+  
+  handleClick(event) {
+    const followToggle = this;
+    
+    event.preventDefault();
+    
+    if(this.followState === 'unfollowed') {
+      this.followState = 'following';
+      this.render();
+      
+      $.ajax({
+        url: 'users/{this.userId}/follow',
+        dataType: 'json',
+        method: 'POST'
+      })
+      
+    } else {
+      this.followState = 'unfollowed';
+      this.render();
+      
+      $.ajax({
+        url: 'users/{this.userId}/follow',
+        dataType: 'json',
+        method: 'DELETE'
+      })
+    }
   }
   
   render() {
